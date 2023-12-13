@@ -4,8 +4,6 @@
 #include <math.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-//dicas simoes: criar a ação bifurcação que simplesmente copia as ações seguintes em espelho
-//ler o documento: fundamentos de algoritmos evolutivos antes de apresentar
 #define DELAY 1
 #define NUM_MAX_RAMOS 4
 #define ENERGIA_INICIAL 0
@@ -71,30 +69,26 @@ SDL_bool colisaoRetaRect(int x1, int y1, int x2, int y2, SDL_Rect* rect);
 //Grupo - Fototropismo - Lázaro Vinaud, Thales Sena e Wesley
 
 /*
-O projeto pretende simular o crescimento de plantas em direção à fontes luminosas evitando obstáculos
+O projeto, feito com SDL2, pretende simular o crescimento de plantas em direção à fontes luminosas evitando obstáculos
 Esse é um fenômeno real dito por fototropismo. As plantas podem tentar ser banhadas
 pelo maior número de fontes. Plantas que desenvolverem flores podem se reproduzir.
 
-Cada indivíduo é um vetor de ações. Cada indivíduo tem uma energia, inicialmente ?ENERGIA_INICIAL?
-Algumas ações são possíveis:
-1 - Crescer - mecânica similar ao braço mecânico, onde se randomiza um angulo para aquela junta se esticar.
+Cada indivíduo é um vetor de ações. Cada indivíduo tem uma energia potencial, dada pelo somatório das energias 
+ganhas por todas suas folhas em contato com a luz
+
+Ações:
+0 - Crescer - mecânica similar ao braço mecânico, onde se randomiza um angulo para aquela junta se esticar.
 Há um custo para isso.
+1 - Nascer folha - Cria-se uma folha a partir de uma junta. A folha permite receber energia da luz.
 2 - Brotar flor - Há um gasto de energia para fazer isso e permite reprodução.
-4 - Reproduzir(caso tenha flor) - Busca outra planta para reproduzir por torneio de dois,
-caso não haja outra planta, o processo fracassa. A semente gerada dá pontos ao individuo.
-3 - Nascer folha - Cria-se uma folha a partir de uma junta. A folha permite receber energia da luz
-5 - Nascer novo ramo? - busca-se uma junta para criar um novo angulo que se tornará 
-uma nova ramificação da planta 
-Em resumo, o individuo começa com ENERGIA_INICIAL pontos de energia e haverá um custo para se manter
-e um ganho a cada folha em contato com a luz. Esse gasto será calculado por uma função que vai 
-levar em conta a quantidade de braços. O ganho também vai ser calculado por uma função que leva
-em conta a quantidade de folhas na luz e a proximidade com as fontes de luz.
-As fontes de luz serão definidas pelo usuário e sua intensidade também.
-O usuário também definirá obstáculos, dos quais a planta deve se afastar.
-Cada individuo tem uma cor para sua flor para fins de diferenciação.
-A simulação tem um número min de individuos vivos, se menos do que isso existirem, o sistema gera um 
-novo aleatório e substitui. Se a energia acabar ou passar o tempo de vida da planta, ela morre.
-A pontuação de uma planta depende de quanto de energia ela tem e quantas sementes ela gerou.
+3 - Bifurcar - A planta cria um novo ramo a partir daquele nó.
+
+Em resumo, a população é iniciada por indivíduos aleatórios, eles são avaliados e inicia-se a variável melhor de todos.
+O pior avaliado será substituido por um versão mutada do melhor de todos. A cada iteração desse processo, há uma chance de 1%
+de uma reprodução sexuada ocorrer. As reproduções sexuadas serão feitas por torneio de 2, entre os indivíduos floridos.
+A avaliação é feita da seguinte maneira: As ações são simuladas e a cada caule "crescido" ou flor brotada, a energia potencial 
+daquela planta é diminuída. A cada folha gerada, é calculada sua distancia a luz e se entre eles há um obstaculo, caso não haja
+uma energia potencial inversamente proporcional à distância é adicionada.
 */
 
 int min(int a, int b) {return (a < b) ? a : b;}
@@ -152,13 +146,14 @@ void copiaIndividuo(Individuo* destino, Individuo* origem) {
 }
 
 void reproduz(Individuo*** populacao, int* num_plantas) {
-
+	//primeiro se vê quantos individuos tem flores, já que são necessários pelo menos 4 para um torneio de 2
     int num_flores = 0;
     for(int i = 0; i < *num_plantas; i++) {
         if((*populacao)[i]->tem_flor) num_flores++;
     }
     if(num_flores >= 4) {
         int p1,p2,m1,m2;
+	    //4 individuos aleatorios são selecionados para duelar e selecionar a mãe e pai.
         do {
             p1 = rand() % *num_plantas;
         } while((*populacao)[p1]->tem_flor == 0);
@@ -184,6 +179,7 @@ void reproduz(Individuo*** populacao, int* num_plantas) {
         }
         Individuo* filho = (Individuo*) malloc(sizeof(Individuo));
         *num_plantas += 1;
+	    //cada ação do filho é sorteada entre a do pai e da mãe
         for(int i = 0; i < NUM_ACOES; i++) {
             if(rand()%2==0) {
                 filho->acoes[i] = (*populacao)[p]->acoes[i];
@@ -194,6 +190,7 @@ void reproduz(Individuo*** populacao, int* num_plantas) {
         filho->pontuacao = 0;
         filho->num_ramos = 1;
         filho->y = 560;
+	    //o x do filho será gerado perto da mãe
         filho->x = ((*populacao)[m]->x-10) + rand() % 20;
         filho->tem_flor = 0;
         if(rand()%2==0) filho->r=(*populacao)[p]->r;
@@ -224,14 +221,14 @@ SDL_bool colisaoRetaRect(int x1, int y1, int x2, int y2, SDL_Rect* rect) {
         return SDL_TRUE;
     }
 
-    int rectLeft = rect->x;
+    int rectEsq = rect->x;
     int rectRight = rect->x + rect->w;
     int rectTop = rect->y;
     int rectBottom = rect->y + rect->h;
 
-    if ((x1 <= rectLeft && x2 >= rectLeft) || (x2 <= rectLeft && x1 >= rectLeft)) {
+    if ((x1 <= rectEsq && x2 >= rectEsq) || (x2 <= rectEsq && x1 >= rectEsq)) {
         float m = (float)(y2 - y1) / (float)(x2 - x1);
-        float intersectionY = m * (rectLeft - x1) + y1;
+        float intersectionY = m * (rectEsq - x1) + y1;
         if (intersectionY >= rectTop && intersectionY <= rectBottom) {
             return SDL_TRUE;
         }
@@ -256,7 +253,7 @@ SDL_bool colisaoRetaRect(int x1, int y1, int x2, int y2, SDL_Rect* rect) {
     if ((y1 <= rectBottom && y2 >= rectBottom) || (y2 <= rectBottom && y1 >= rectBottom)) {
         float m = (float)(x2 - x1) / (float)(y2 - y1);
         float intersectionX = m * (rectBottom - y1) + x1;
-        if (intersectionX >= rectLeft && intersectionX <= rectRight) {
+        if (intersectionX >= rectEsq && intersectionX <= rectRight) {
             return SDL_TRUE;
         }
     }
