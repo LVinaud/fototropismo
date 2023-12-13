@@ -17,4 +17,14 @@ A população é composta de individuos complemtamente aleatorios, onde uma stru
 ## Avaliação
 A nota final do indivíduo será a quantidade final de energia que ele possui no final do processamento de suas ações
 onde crescer gasta energia e gerar flor gasta energia sendo assim o que aumenta o valor da energia sendo as folhas isso estando relacionado com a distancia que elas estão da fonte luminosa (portanto há um incentivo para crescer).
-##
+## Estratégias utilizadas
+### Elitismo
+Consiste em escolher o melhor indivíduo de toda a população e fazer um crossing over com outro indivíduo, no nosso caso pegamos o pior avaliado e substituímos por uma versão mutada do melhor de todos.
+### Torneio de 2
+No nosso programa ocorre está reprodução com indivíduos floridos, onde a criança nasce ao lado da mãe escolhida através desse método.
+
+# Algumas demontrações do programa
+![]()
+![]()
+
+
