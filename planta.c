@@ -222,38 +222,38 @@ SDL_bool colisaoRetaRect(int x1, int y1, int x2, int y2, SDL_Rect* rect) {
     }
 
     int rectEsq = rect->x;
-    int rectRight = rect->x + rect->w;
-    int rectTop = rect->y;
-    int rectBottom = rect->y + rect->h;
+    int rectDir = rect->x + rect->w;
+    int rectCima = rect->y;
+    int rectBaixo = rect->y + rect->h;
 
     if ((x1 <= rectEsq && x2 >= rectEsq) || (x2 <= rectEsq && x1 >= rectEsq)) {
         float m = (float)(y2 - y1) / (float)(x2 - x1);
         float intersectionY = m * (rectEsq - x1) + y1;
-        if (intersectionY >= rectTop && intersectionY <= rectBottom) {
+        if (intersectionY >= rectCima && intersectionY <= rectBaixo) {
             return SDL_TRUE;
         }
     }
 
-    if ((x1 <= rectRight && x2 >= rectRight) || (x2 <= rectRight && x1 >= rectRight)) {
+    if ((x1 <= rectDir && x2 >= rectDir) || (x2 <= rectDir && x1 >= rectDir)) {
         float m = (float)(y2 - y1) / (float)(x2 - x1);
-        float intersectionY = m * (rectRight - x1) + y1;
-        if (intersectionY >= rectTop && intersectionY <= rectBottom) {
+        float intersectionY = m * (rectDir - x1) + y1;
+        if (intersectionY >= rectCima && intersectionY <= rectBaixo) {
             return SDL_TRUE;
         }
     }
 
-    if ((y1 <= rectTop && y2 >= rectTop) || (y2 <= rectTop && y1 >= rectTop)) {
+    if ((y1 <= rectCima && y2 >= rectCima) || (y2 <= rectCima && y1 >= rectCima)) {
         float m = (float)(x2 - x1) / (float)(y2 - y1);
-        float intersectionX = m * (rectTop - y1) + x1;
-        if (intersectionX >= rectLeft && intersectionX <= rectRight) {
+        float intersectionX = m * (rectCima - y1) + x1;
+        if (intersectionX >= rectEsq && intersectionX <= rectDir) {
             return SDL_TRUE;
         }
     }
 
-    if ((y1 <= rectBottom && y2 >= rectBottom) || (y2 <= rectBottom && y1 >= rectBottom)) {
+    if ((y1 <= rectBaixo && y2 >= rectBaixo) || (y2 <= rectBaixo && y1 >= rectBaixo)) {
         float m = (float)(x2 - x1) / (float)(y2 - y1);
-        float intersectionX = m * (rectBottom - y1) + x1;
-        if (intersectionX >= rectEsq && intersectionX <= rectRight) {
+        float intersectionX = m * (rectBaixo - y1) + x1;
+        if (intersectionX >= rectEsq && intersectionX <= rectDir) {
             return SDL_TRUE;
         }
     }
