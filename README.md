@@ -24,7 +24,7 @@ Consiste em escolher o melhor indivíduo de toda a população e fazer um crossi
 No nosso programa ocorre está reprodução com indivíduos floridos, onde a criança nasce ao lado da mãe escolhida através desse método.
 
 # Algumas demontrações do programa
-![]()
-![]()
+![](https://github.com/LVinaud/fototropismo/blob/main/Screencast%20from%2013-12-2023%2011%2008%2027.gif)
+![](https://github.com/LVinaud/fototropismo/blob/main/Screencast%20from%2013-12-2023%2011%2006%2019.gif)
 
 
