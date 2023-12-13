@@ -277,21 +277,28 @@ void desenhaFolha(Tela* tela, float x, float y) {
 
 void avaliaIndividuo(Individuo* individuo, SDL_Rect** obstaculos, int num_obs, Fonte_luminosa* luzes, int num_luzes) 
 {   
+	//já que uma planta pode bifurcar, eu inicializo um vetor de x_atuais(que são todos os pontos finais da planta)
     float* x_atuais = (float*) malloc(sizeof(float)); x_atuais[0] = individuo->x;
+    	//não é necessário fazer o mesmo para o y, já que ele é o mesmo para todas as bifurcações.
     float y_atual = individuo->y;
     individuo->num_ramos = 1;
     float energia_potencial = 0;
     for(int i = 0; i < NUM_ACOES; i++) {
         switch (individuo->acoes[i].tipo){
-            case 0:
+            case 0://crescer
+		    //o y é acrescido do seno do angulo vezes 20
                 y_atual += sin(individuo->acoes[i].angulo) * 20;
                 for(int h = 0; h < individuo->num_ramos; h++) {
+			//para cada caule crescido, é perdida uma energia
                     energia_potencial -= CONST_PERDA;
                     if((h % 2) == 0)
+			    //se o x_atual ou ponto final daquele caule é par, ele cresce pra esquerda, então é diminuido o cosseno
                         x_atuais[h] -= cos(individuo->acoes[i].angulo) * 20;
                     else
+			    //se o x_atual ou ponto final daquele caule é impar, ele cresce pra direita, então é acrescido o cosseno
                         x_atuais[h] += cos(individuo->acoes[i].angulo) * 20;
                     for(int m = 0; m < num_obs; m++) {
+			    //se algum ponto ficar dentro de algum obstaculo, a pontuação é negativada
                         if(dentroObstaculo(x_atuais[h], y_atual, obstaculos[m])) {
                             individuo->pontuacao = -999999;
                             return;
@@ -299,17 +306,19 @@ void avaliaIndividuo(Individuo* individuo, SDL_Rect** obstaculos, int num_obs, F
                     }
                 }
                 break;
-            case 1:
+            case 1: //brota flor
                 individuo->tem_flor = 1;
                 energia_potencial -= 10 * CONST_PERDA;
                 break;
             case 2: 
+		    //cresce folha
                 for(int j = 0; j < num_luzes; j++)
                     for(int h = 0; h < individuo->num_ramos; h++)
                         if(estaIluminada(luzes[j], obstaculos, num_obs, x_atuais[h], y_atual))
+				//se ela está iluminada por alguma luz, ela ganha uma energia potencial.
                             energia_potencial += CONST_GANHO / (distancia(x_atuais[h], y_atual, luzes[j].local.x, luzes[j].local.y));
                 break;
-            case 3:
+            case 3: //bifurcar, o numero de ramos dobra
             if(individuo->num_ramos > NUM_MAX_RAMOS) break;
                 individuo->num_ramos = individuo->num_ramos * 2;
                 x_atuais = (float*) realloc(x_atuais, individuo->num_ramos * sizeof(float));
