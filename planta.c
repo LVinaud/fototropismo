@@ -634,20 +634,21 @@ int main(void) {
                 copiaIndividuo(melhor_de_todos, populacao[i]);
             }
         }
-	if(melhor_de_todos->pontuacao == pont_anterior) {
-            ger_repetidas++;
-        } else {
-            ger_repetidas = 0;
-        }
+        if(melhor_de_todos->pontuacao == pont_anterior) {
+                ger_repetidas++;
+            } else {
+                ger_repetidas = 0;
+            }
         if(ger_repetidas >= 50) {
             if(taxa_mutacao <= (NUM_ACOES)*0.5)
                 taxa_mutacao++;
             else 
                 taxa_mutacao = 1;
+            ger_repetidas = 0;
         }
         //printa_individuo(melhor_de_todos);
         //printf("A pontuação do melhor de todos foi: %lf\n", melhor_de_todos->pontuacao);
-        printf("%d\n", taxa_mutacao);
+        printf("%d %d\n", taxa_mutacao, ger_repetidas);
         arrumaTela(&tela);
         arrumaObstaculos(&tela, obstaculos, quantidade_obstaculos);
         arrumaLuzes(&tela, luzes, quantidade_luzes);
