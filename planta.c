@@ -647,7 +647,7 @@ int main(void) {
         }
         //printa_individuo(melhor_de_todos);
         //printf("A pontuação do melhor de todos foi: %lf\n", melhor_de_todos->pontuacao);
-        //printf("%d\n", taxa_mutacao);
+        printf("%d\n", taxa_mutacao);
         arrumaTela(&tela);
         arrumaObstaculos(&tela, obstaculos, quantidade_obstaculos);
         arrumaLuzes(&tela, luzes, quantidade_luzes);
@@ -666,7 +666,7 @@ int main(void) {
         if(rand() % 100 == 0)
             reproduz(&populacao, &num_plantas);
         mostraTela(&tela);
-
+        pont_anterior = melhor_de_todos->pontuacao;
         SDL_Delay(DELAY);
     }
 
