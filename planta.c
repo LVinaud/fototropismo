@@ -647,7 +647,7 @@ int main(void) {
         }
         //printa_individuo(melhor_de_todos);
         //printf("A pontuação do melhor de todos foi: %lf\n", melhor_de_todos->pontuacao);
-        printf("%d\n", taxa_mutacao);
+        //printf("%d\n", taxa_mutacao);
         arrumaTela(&tela);
         arrumaObstaculos(&tela, obstaculos, quantidade_obstaculos);
         arrumaLuzes(&tela, luzes, quantidade_luzes);
