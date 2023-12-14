@@ -21,6 +21,8 @@ onde crescer gasta energia e gerar flor gasta energia sendo assim o que aumenta 
 ### Elitismo
 Consiste em escolher o melhor indivíduo de toda a população e fazer um crossing over com outro indivíduo, no nosso caso pegamos o pior avaliado e substituímos por uma versão mutada do melhor de todos.
 ### Torneio de 2
+No torneio de 2, 4 indivíduos aleatórios(dentre os floridos) serão selecionados, dois deles comparam sua pontuação para decidir quem será o pai,
+os outros dois para quem será a mãe. As ações do novo indivíduo serão sorteadas dentre as do pai e as da mãe.
 No nosso programa ocorre está reprodução com indivíduos floridos, onde a criança nasce ao lado da mãe escolhida através desse método.
 ### Mutação Variável
 Em cada iteração do código, checamos se a pontuação do melhor de todos está igual à iteração passada, se isso se repetir por 50 gerações, a taxa de mutação é acrescida de um.
