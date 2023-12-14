@@ -7,6 +7,10 @@ Com a apropriaçao dos metodos e conceitos aprendidos em sala, tentamos fazer co
 a parte gráfica do programa.
 
 # O algoritmo
+## Evolução
+Um sistema evolutivo inspirado na evolução real busca encontrar soluções razoáveis para problemas de difícil solução por métodos convencionais.
+Uma população de soluções é avaliada e recebe uma pontuação no contexto do problema, novas soluções são geradas a partir da mutação(pequena alteração) ou reprodução 
+das melhores soluções encontradas até então, o processo se repete indefinidamente. Com a preservação da melhor solução já encontrada, o algorítmo sempre gerará soluções melhores ou equivalentes ao já encontrado.
 ## População
 A população é composta de individuos completamente aleatorios, onde uma struct composta pelas seguintes variaveis:
 - ```Acao acoes[NUM_ACOES]``` um vetor de structs que compõem as as açoes do indiviuo (o gene).
@@ -18,7 +22,7 @@ A população é composta de individuos completamente aleatorios, onde uma struc
 ## Avaliação
 A nota final do indivíduo será a quantidade final de energia que ele possui no final do processamento de suas ações
 onde crescer gasta energia e gerar flor gasta energia sendo assim o que aumenta o valor da energia sendo as folhas isso estando relacionado com a distancia que elas estão da fonte luminosa (portanto há um incentivo para crescer próximo à luz).
-## Estratégias utilizadas
+## Estratégias avançadas utilizadas
 ### Predação
 Consiste em escolher o melhor indivíduo de toda a população e fazer um crossing over com outro indivíduo, no nosso caso pegamos o pior avaliado e substituímos por uma versão mutada do melhor de todos.
 ### Torneio de 2
