@@ -3,10 +3,9 @@
 #include <time.h>
 #include <math.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+
 #define DELAY 1
 #define NUM_MAX_RAMOS 4
-#define ENERGIA_INICIAL 0
 #define CONST_PERDA 1
 #define CONST_GANHO 1000000
 #define SCREEN_WIDTH 1000
@@ -49,7 +48,7 @@ void avaliaIndividuo(Individuo* individuo, SDL_Rect** obstaculos, int num_obs, F
 void arrumaLuzes(Tela* tela, Fonte_luminosa* luzes, int quantidade_luzes);
 void inicializaSDL(Tela* tela);
 void lerInput(void);
-void mutaIndividuo(Individuo* individuo);
+void mutaIndividuo(Individuo* individuo, int taxa_mat);
 void mostraTela(Tela* tela);
 int estaIluminada(Fonte_luminosa luz, SDL_Rect** obstaculos, int num_obs, int x, int y);
 void arrumaTela(Tela* tela);
@@ -99,8 +98,8 @@ int dentroObstaculo(int x, int y, SDL_Rect* obstaculo) {
     return 0;
 }
 
-void mutaIndividuo(Individuo* individuo) {
-    for(int i = 0; i < TAXA_MUTACAO; i++) {
+void mutaIndividuo(Individuo* individuo, int taxa_mut) {
+    for(int i = 0; i < taxa_mut; i++) {
         int qual_acao = rand()%NUM_ACOES;
         individuo->acoes[qual_acao].tipo = rand() % 4;
         individuo->acoes[qual_acao].angulo = ((float)(rand() % 6283184))/(1000000.0);
@@ -319,7 +318,7 @@ void avaliaIndividuo(Individuo* individuo, SDL_Rect** obstaculos, int num_obs, F
                             energia_potencial += CONST_GANHO / (distancia(x_atuais[h], y_atual, luzes[j].local.x, luzes[j].local.y));
                 break;
             case 3: //bifurcar, o numero de ramos dobra
-            if(individuo->num_ramos > NUM_MAX_RAMOS) break;
+            if(individuo->num_ramos >= NUM_MAX_RAMOS) break;
                 individuo->num_ramos = individuo->num_ramos * 2;
                 x_atuais = (float*) realloc(x_atuais, individuo->num_ramos * sizeof(float));
                 for(int h = (individuo->num_ramos/2)-1; h >= 0; h--) {
@@ -365,7 +364,7 @@ void arrumaIndividuo(Individuo* individuo, Tela* tela)
                 desenhaFlor(tela, x_atuais[h], y_atual, individuo->r, individuo->g, individuo->b);
             break;
         case 3:
-        if(individuo->num_ramos > NUM_MAX_RAMOS) break;
+        if(individuo->num_ramos >= NUM_MAX_RAMOS) break;
             individuo->num_ramos = individuo->num_ramos * 2;
             x_atuais = (float*) realloc(x_atuais, individuo->num_ramos * sizeof(float));
             for(int h = (individuo->num_ramos/2)-1; h >= 0; h--) {
@@ -603,7 +602,7 @@ void mostraTela(Tela* tela)
 
 int main(void) {
 
-    int quantidade_obstaculos = 0, quantidade_luzes = 0, num_plantas = NUM_MIN_PLANTAS;
+    int quantidade_obstaculos = 0, quantidade_luzes = 0, num_plantas = NUM_MIN_PLANTAS, taxa_mutacao = TAXA_MUTACAO;
 
     Tela tela;
     inicializaSDL(&tela);
@@ -623,11 +622,23 @@ int main(void) {
 
     Individuo* melhor_de_todos = (Individuo*) malloc(sizeof(Individuo));
     copiaIndividuo(melhor_de_todos, populacao[0]);
-
+    int ger_repetidas = 0;
+    int pont_anterior = melhor_de_todos->pontuacao;
     while(1) {
         lerInput();
         for(int i = 0; i < num_plantas; i++) {
             avaliaIndividuo(populacao[i], obstaculos, quantidade_obstaculos, luzes, quantidade_luzes);
+        }
+        if(melhor_de_todos->pontuacao == pont_anterior) {
+            ger_repetidas++;
+        } else {
+            ger_repetidas = 0;
+        }
+        if(ger_repetidas >= 50) {
+            if(taxa_mutacao <= (NUM_ACOES)*0.5)
+                taxa_mutacao++;
+            else 
+                taxa_mutacao = 1;
         }
         for(int i = 0; i < num_plantas; i++) {
             if(populacao[i]->pontuacao > melhor_de_todos->pontuacao) {
@@ -636,6 +647,7 @@ int main(void) {
         }
         //printa_individuo(melhor_de_todos);
         //printf("A pontuação do melhor de todos foi: %lf\n", melhor_de_todos->pontuacao);
+        printf("%d\n", taxa_mutacao);
         arrumaTela(&tela);
         arrumaObstaculos(&tela, obstaculos, quantidade_obstaculos);
         arrumaLuzes(&tela, luzes, quantidade_luzes);
@@ -650,10 +662,11 @@ int main(void) {
             }
         }
         copiaIndividuo(populacao[pior], melhor_de_todos);
-        mutaIndividuo(populacao[pior]);
+        mutaIndividuo(populacao[pior], taxa_mutacao);
         if(rand() % 100 == 0)
             reproduz(&populacao, &num_plantas);
         mostraTela(&tela);
+
         SDL_Delay(DELAY);
     }
 
