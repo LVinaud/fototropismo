@@ -7,7 +7,7 @@ Com a apropriaçao dos metodos e conceitos aprendidos em sala, tentamos fazer co
 
 # O algoritmo
 ## População
-A população é composta de individuos complemtamente aleatorios, onde uma struct composta pelas seguintes variaveis:
+A população é composta de individuos completamente aleatorios, onde uma struct composta pelas seguintes variaveis:
 - ```Acao acoes[NUM_ACOES]``` um vetor de structs que compõem as as açoes do indiviuo (o gene).
 - ```pontuacao``` a nota que será atribuída na hora da avaliação para o indivíduo.
 - ```tem_flor``` auxília para saber se o indivíduo pode realizar reprodução sexuada.
@@ -16,7 +16,7 @@ A população é composta de individuos complemtamente aleatorios, onde uma stru
 - ```num_ramos``` quantidade de ramificações que a planta gerou.
 ## Avaliação
 A nota final do indivíduo será a quantidade final de energia que ele possui no final do processamento de suas ações
-onde crescer gasta energia e gerar flor gasta energia sendo assim o que aumenta o valor da energia sendo as folhas isso estando relacionado com a distancia que elas estão da fonte luminosa (portanto há um incentivo para crescer).
+onde crescer gasta energia e gerar flor gasta energia sendo assim o que aumenta o valor da energia sendo as folhas isso estando relacionado com a distancia que elas estão da fonte luminosa (portanto há um incentivo para crescer próximo à luz).
 ## Estratégias utilizadas
 ### Elitismo
 Consiste em escolher o melhor indivíduo de toda a população e fazer um crossing over com outro indivíduo, no nosso caso pegamos o pior avaliado e substituímos por uma versão mutada do melhor de todos.
