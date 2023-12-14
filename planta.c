@@ -629,7 +629,12 @@ int main(void) {
         for(int i = 0; i < num_plantas; i++) {
             avaliaIndividuo(populacao[i], obstaculos, quantidade_obstaculos, luzes, quantidade_luzes);
         }
-        if(melhor_de_todos->pontuacao == pont_anterior) {
+        for(int i = 0; i < num_plantas; i++) {
+            if(populacao[i]->pontuacao > melhor_de_todos->pontuacao) {
+                copiaIndividuo(melhor_de_todos, populacao[i]);
+            }
+        }
+	if(melhor_de_todos->pontuacao == pont_anterior) {
             ger_repetidas++;
         } else {
             ger_repetidas = 0;
@@ -639,11 +644,6 @@ int main(void) {
                 taxa_mutacao++;
             else 
                 taxa_mutacao = 1;
-        }
-        for(int i = 0; i < num_plantas; i++) {
-            if(populacao[i]->pontuacao > melhor_de_todos->pontuacao) {
-                copiaIndividuo(melhor_de_todos, populacao[i]);
-            }
         }
         //printa_individuo(melhor_de_todos);
         //printf("A pontuação do melhor de todos foi: %lf\n", melhor_de_todos->pontuacao);
