@@ -22,6 +22,8 @@ onde crescer gasta energia e gerar flor gasta energia sendo assim o que aumenta 
 Consiste em escolher o melhor indivíduo de toda a população e fazer um crossing over com outro indivíduo, no nosso caso pegamos o pior avaliado e substituímos por uma versão mutada do melhor de todos.
 ### Torneio de 2
 No nosso programa ocorre está reprodução com indivíduos floridos, onde a criança nasce ao lado da mãe escolhida através desse método.
+### Mutação Variável
+Em cada iteração do código, checamos se a pontuação do melhor de todos está igual à iteração passada, se isso se repetir por 50 gerações, a taxa de mutação é acrescida de um.
 
 # Algumas demontrações do programa
 ![](https://github.com/LVinaud/fototropismo/blob/main/Screencast%20from%2013-12-2023%2011%2008%2027.gif)
