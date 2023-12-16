@@ -19,6 +19,8 @@ A população é composta de individuos completamente aleatorios, onde uma struc
 - ```x, y``` ponto de brotamento do indivíduo.
 - ```r, g, b``` coloração das flores do indivíduo. 
 - ```num_ramos``` quantidade de ramificações que a planta gerou.
+
+Cada indivíduo portanto é uma sequência de ações, há 4 tipos de ações. Crescer, brotar flor, nascer folha e bifurcar. Crescer e brotar flor gastam energia, enquanto que a proximidade das folhas com fontes luminosas não obstruídas adicionam energia ao individuo. Bifurcar gera uma nova ramificação simétrica.
 ## Avaliação
 A nota final do indivíduo será a quantidade final de energia que ele possui no final do processamento de suas ações
 onde crescer gasta energia e gerar flor gasta energia sendo assim o que aumenta o valor da energia sendo as folhas isso estando relacionado com a distancia que elas estão da fonte luminosa (portanto há um incentivo para crescer próximo à luz).
