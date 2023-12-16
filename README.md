@@ -23,7 +23,7 @@ A população é composta de individuos completamente aleatorios, onde uma struc
 A nota final do indivíduo será a quantidade final de energia que ele possui no final do processamento de suas ações
 onde crescer gasta energia e gerar flor gasta energia sendo assim o que aumenta o valor da energia sendo as folhas isso estando relacionado com a distancia que elas estão da fonte luminosa (portanto há um incentivo para crescer próximo à luz).
 ## Estratégias avançadas utilizadas
-### Predação
+### Predação + Elitismo
 Consiste em escolher o pior indivíduo de toda a população e substituí-lo por uma versão mutada do melhor já encontrado.
 ### Torneio de 2
 No torneio de 2, 4 indivíduos aleatórios(dentre os floridos) serão selecionados, dois deles comparam sua pontuação para decidir quem será o pai,
