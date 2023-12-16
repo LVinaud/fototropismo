@@ -39,7 +39,7 @@ Em cada iteração do código, checamos se a pontuação do melhor de todos est�
 ![](https://github.com/LVinaud/fototropismo/blob/main/Screencast%20from%2013-12-2023%2011%2006%2019.gif)
 
 # Vídeo
-
+[![](https://github.com/LVinaud/fototropismo/assets/80454712/918c889a-06fd-4f04-b540-5af45b13620b)](https://youtu.be/fmPFOYRD5iA)
 
 # Alunos
 Lázaro Pereira Vinaud Neto - 14675396
