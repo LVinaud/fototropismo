@@ -1,9 +1,9 @@
 # Fototropismo evolutivo
-Tentamos simular como as plantas se desenvolvem em busca da luz.
+Tentamos simular o comportamento dito por fototropismo positivo, no qual plantas se desenvolvem em direção à uma fonte luminosa.
 ![](https://github.com/LVinaud/fototropismo/blob/main/Positive_Phototropism_Demonstration.gif)
 
 # Sobre o projeto
-Com a apropriaçao dos metodos e conceitos aprendidos em sala, tentamos fazer com que plantas se desenvolvam em direçao a luz de maneira otimizada e ao mesmo tempo que desviem de obstáculos que não permitem a passagem de luz. Utilizamos a biblioteca SDL2 para 
+Com a apropriaçao dos metodos e conceitos aprendidos em sala, tentamos fazer com que plantas se desenvolvam em direçao a luz de maneira otimizada ao mesmo tempo que desviem de obstáculos que não permitem a passagem de luz. Utilizamos a biblioteca SDL2 para 
 a parte gráfica do programa.
 
 # O algoritmo
